@@ -1,0 +1,12 @@
+com/Dextho/Delegacion/Controller/TareasController.class
+com/Dextho/Delegacion/Model/Tareas.class
+com/Dextho/Delegacion/Controller/AltaPersonasController.class
+com/Dextho/Delegacion/Repository/TareaRepository.class
+com/Dextho/Delegacion/ServicesImpl/CiudadanoServiceImpl.class
+com/Dextho/Delegacion/Service/CiudadanoService.class
+com/Dextho/Delegacion/DelegacionApplication.class
+com/Dextho/Delegacion/Model/Ciudadanos.class
+com/Dextho/Delegacion/Service/TareaService.class
+com/Dextho/Delegacion/Repository/CiudadanosRepository.class
+com/Dextho/Delegacion/ServicesImpl/TareaServiceImpl.class
+com/Dextho/Delegacion/Config/SecurityConfig.class
