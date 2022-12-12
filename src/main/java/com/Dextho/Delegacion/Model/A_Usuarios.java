@@ -8,16 +8,18 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name ="usuarios")
-public class Usuarios {
+@Table(name ="a_usuarios")
+public class A_Usuarios {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	private Long id;
 	
 	@Column(name = "username", nullable = false)
 	private String username;
@@ -28,27 +30,27 @@ public class Usuarios {
 	@Column (name = "enabled", nullable = false)
 	private boolean enabled;
 	
-	@OneToMany(mappedBy = "usuarios", cascade = CascadeType.ALL)
-	private Collection<Authorities> authorities = new ArrayList<>();
+	@OneToMany(cascade = CascadeType.ALL)
+	private Collection<B_Authorities> b_authorities = new ArrayList<>();
 	
 	
 	
-	public Usuarios() {
+	public A_Usuarios() {
 
 	}
 
-	public Usuarios(String username, String password, boolean enabled) {
+	public A_Usuarios(String username, String password, boolean enabled) {
 		super();
 		this.username = username;
 		this.password = password;
 		this.enabled = enabled;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -75,6 +77,14 @@ public class Usuarios {
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
+
+	@Override
+	public String toString() {
+		return "A_Usuarios [id=" + id + ", username=" + username + ", password=" + password + ", enabled=" + enabled
+				+ "]";
+	}
+
+
 	
 	
 	

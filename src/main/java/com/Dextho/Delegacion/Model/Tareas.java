@@ -2,11 +2,14 @@ package com.Dextho.Delegacion.Model;
 
 import java.time.LocalDateTime;
 
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -29,8 +32,10 @@ public class Tareas {
 	@Column(name = "fecha_Modificado", nullable = false)
 	private LocalDateTime fecha_Modificado;
 	
-	@Column(name = "idUsuarioModificado", nullable = false)
-	private Long idUsuarioModificado;
+
+	@ManyToOne
+	@JoinColumn(name = "idUsuarioModificado",referencedColumnName = "id", nullable = false)
+	A_Usuarios a_usuarios;
 	
 	public Tareas() {
 		
@@ -46,7 +51,6 @@ public class Tareas {
 		this.descripcion = descripcion;
 		this.prioridad = prioridad;
 		this.fecha_Modificado = fecha_Modificado;
-		this.idUsuarioModificado = idUsuarioModificado;
 	}
 
 	public Long getId() {
@@ -90,19 +94,14 @@ public class Tareas {
 		this.fecha_Modificado = fecha_Modificado;
 	}
 
-	public Long getIdUsuarioModificado() {
-		return idUsuarioModificado;
-	}
-
-	public void setIdUsuarioModificado(Long idUsuarioModificado) {
-		this.idUsuarioModificado = idUsuarioModificado;
-	}
-
 	@Override
 	public String toString() {
 		return "Tareas [id=" + id + ", nombre=" + nombre + ", descripcion=" + descripcion + ", prioridad=" + prioridad
-				+ ", fecha_Modificado=" + fecha_Modificado + ", idUsuarioModificado=" + idUsuarioModificado + "]";
+				+ ", fecha_Modificado=" + fecha_Modificado + ", a_usuarios=" + a_usuarios + "]";
 	}
+
+
+
 
 
 

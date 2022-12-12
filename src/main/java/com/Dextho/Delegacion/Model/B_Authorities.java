@@ -10,8 +10,8 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "authorities")
-public class Authorities {
+@Table(name = "b_authorities")
+public class B_Authorities {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,18 +25,18 @@ public class Authorities {
 	
 	@ManyToOne
 	@JoinColumn(name = "user_id",referencedColumnName = "id", nullable = false)
-	private Usuarios usuarios;
+	A_Usuarios a_usuarios;
 
 	
 	
-	public Authorities() {
+	public B_Authorities() {
 	}
 
-	public Authorities(String username, String authority, Usuarios usuarios) {
+	public B_Authorities(String username, String authority, A_Usuarios a_usuarios) {
 		super();
 		this.username = username;
 		this.authority = authority;
-		this.usuarios = usuarios;
+		this.a_usuarios = a_usuarios;
 	}
 
 	public Long getId() {
@@ -63,13 +63,12 @@ public class Authorities {
 		this.authority = authority;
 	}
 
-	public Usuarios getUsuarios() {
-		return usuarios;
+	@Override
+	public String toString() {
+		return "B_Authorities [id=" + id + ", username=" + username + ", authority=" + authority + "]";
 	}
 
-	public void setUsuarios(Usuarios usuarios) {
-		this.usuarios = usuarios;
-	}
+
 
 
 	

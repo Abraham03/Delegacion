@@ -3,13 +3,13 @@ package com.Dextho.Delegacion.Service;
 import java.util.List;
 import java.util.Optional;
 
-import com.Dextho.Delegacion.Model.Authorities;
+import com.Dextho.Delegacion.Model.B_Authorities;
 
 public interface AuthoritiesService {
 
-	List<Authorities> getAllAuthorities();
-	Optional<Authorities> getAuthoritiesById(Long id);
-	Authorities saveAuthorities(Authorities a);
-	void updateAuthorities(Authorities a);
+	List<B_Authorities> getAllAuthorities();
+	Optional<B_Authorities> getAuthoritiesById(Long id);
+	B_Authorities saveAuthorities(B_Authorities a);
+	void updateAuthorities(B_Authorities a);
 	boolean deleteAuthoritiesById(Long id);
 }

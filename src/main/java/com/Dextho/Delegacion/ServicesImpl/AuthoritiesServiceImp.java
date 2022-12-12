@@ -6,7 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.Dextho.Delegacion.Model.Authorities;
+import com.Dextho.Delegacion.Model.B_Authorities;
 import com.Dextho.Delegacion.Repository.AuthoritiesRepository;
 import com.Dextho.Delegacion.Service.AuthoritiesService;
 
@@ -17,33 +17,34 @@ public class AuthoritiesServiceImp implements AuthoritiesService {
 	AuthoritiesRepository authoritiesRepository;
 	
 	@Override
-	public List<Authorities> getAllAuthorities() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<B_Authorities> getAllAuthorities() {
+		return (List<B_Authorities>) authoritiesRepository.findAll();
 	}
 
 	@Override
-	public Optional<Authorities> getAuthoritiesById(Long id) {
-		// TODO Auto-generated method stub
-		return Optional.empty();
+	public Optional<B_Authorities> getAuthoritiesById(Long id) {
+		return authoritiesRepository.findById(id);
 	}
 
 	@Override
-	public Authorities saveAuthorities(Authorities a) {
-		// TODO Auto-generated method stub
-		return null;
+	public B_Authorities saveAuthorities(B_Authorities a) {
+		return authoritiesRepository.save(a);
 	}
 
 	@Override
-	public void updateAuthorities(Authorities a) {
-		// TODO Auto-generated method stub
-		
+	public void updateAuthorities(B_Authorities a) {
+		authoritiesRepository.save(a);
 	}
 
 	@Override
 	public boolean deleteAuthoritiesById(Long id) {
-		// TODO Auto-generated method stub
-		return false;
+		try {
+			Optional<B_Authorities> a = getAuthoritiesById(id);
+			authoritiesRepository.delete(a.get());
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
 	}
 
 }
