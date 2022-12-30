@@ -1,5 +1,6 @@
 package com.Dextho.Delegacion.ServicesImpl;
 
+
 import java.util.List;
 import java.util.Optional;
 
@@ -17,18 +18,22 @@ public class TareaServiceImpl implements TareaService{
 
 	public List<Tareas> getAllTareas() {
 		return (List<Tareas>) tareaRepository.findAll();
+				
 	}
 
 	public Tareas saveTarea(Tareas tareas) {
-		return tareaRepository.save(tareas);
+		return tareaRepository.save(tareas);	
+		
 	}
 
 	public Optional <Tareas> getTareaById(Long id) {
 		return tareaRepository.findById(id);
+		
 	}
 
 	public void deleteTareaById(Long id) {
 		tareaRepository.deleteById(id);
+	
 	}
 	
 

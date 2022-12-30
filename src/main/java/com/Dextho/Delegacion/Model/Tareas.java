@@ -8,8 +8,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -32,31 +30,26 @@ public class Tareas {
 	@Column(name = "fecha_Modificado", nullable = false)
 	private LocalDateTime fecha_Modificado;
 	
+	@Column(name = "id_Usuario_Modificado")
+	private Long IdUsuarioModificado;
 
-	@ManyToOne
-	@JoinColumn(name = "idUsuarioModificado",referencedColumnName = "id", nullable = false)
-	A_Usuarios a_usuarios;
-	
 	public Tareas() {
-		
+		super();
 	}
 
-	public Tareas( String nombre, 
-				String descripcion, 
-				String prioridad, 
-				LocalDateTime fecha_Modificado,
-				Long idUsuarioModificado) {
+	public Tareas(String nombre, String descripcion, String prioridad, LocalDateTime fecha_Modificado,
+			Long idUsuarioModificado) {
 		super();
 		this.nombre = nombre;
 		this.descripcion = descripcion;
 		this.prioridad = prioridad;
 		this.fecha_Modificado = fecha_Modificado;
+		IdUsuarioModificado = idUsuarioModificado;
 	}
 
 	public Long getId() {
 		return id;
 	}
-	
 
 	public void setId(Long id) {
 		this.id = id;
@@ -94,19 +87,12 @@ public class Tareas {
 		this.fecha_Modificado = fecha_Modificado;
 	}
 
-	@Override
-	public String toString() {
-		return "Tareas [id=" + id + ", nombre=" + nombre + ", descripcion=" + descripcion + ", prioridad=" + prioridad
-				+ ", fecha_Modificado=" + fecha_Modificado + ", a_usuarios=" + a_usuarios + "]";
+	public Long getIdUsuarioModificado() {
+		return IdUsuarioModificado;
 	}
 
+	public void setIdUsuarioModificado(Long idUsuarioModificado) {
+		IdUsuarioModificado = idUsuarioModificado;
+	}
 
-
-
-
-
-
-	
-	
-	
 }

@@ -3,14 +3,15 @@ package com.Dextho.Delegacion.Service;
 import java.util.List;
 import java.util.Optional;
 
-import com.Dextho.Delegacion.Model.A_Usuarios;
+import com.Dextho.Delegacion.Model.User;
 
 public interface UsuariosService {
 
-	List<A_Usuarios> getAllUsuarios();
-	Optional<A_Usuarios> getUsuariosById(Long id);
-	A_Usuarios saveUsuarios(A_Usuarios u);
-	void updateUsuarios(A_Usuarios u);
+	List<User> getAllUsuarios();
+	Optional<User> getUsuariosById(Long id);
+	User saveUsuarios(User u);
+	void updateUsuarios(User u);
 	boolean deleteUsuariosById(Long id);
+	User FindByUsername(String username);
 	
 }

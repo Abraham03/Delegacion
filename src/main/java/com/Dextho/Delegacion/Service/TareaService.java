@@ -3,6 +3,7 @@ package com.Dextho.Delegacion.Service;
 import java.util.List;
 import java.util.Optional;
 
+
 import com.Dextho.Delegacion.Model.Tareas;
 
 public interface TareaService {
