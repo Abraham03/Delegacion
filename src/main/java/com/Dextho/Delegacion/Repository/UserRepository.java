@@ -10,8 +10,7 @@ import com.Dextho.Delegacion.Model.User;
 @Repository
 public interface UserRepository extends CrudRepository<User, Long> {
 
-	@Query("SELECT u FROM User u LEFT JOIN FETCH u.roles WHERE u.username = :username")
+	@Query("SELECT u FROM User u INNER JOIN u.roles r WHERE u.username = :username")
 	User findByUsername(@Param("username") String username);
-
 
 }

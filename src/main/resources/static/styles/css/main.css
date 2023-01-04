@@ -47,4 +47,7 @@ h1 {
 .login-form h3{
     text-align: center;
     color: #fff;
-}	
+}
+.input_login{
+	margin-bottom: 2%;
+}

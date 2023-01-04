@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.Dextho.Delegacion.Model.Tareas;
@@ -25,11 +26,16 @@ import com.Dextho.Delegacion.ServicesImpl.TareaServiceImpl;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("Dextho/tarea")
+@RequestMapping("/Dextho")
 public class TareasController {
 	@Autowired
 	TareaServiceImpl tareaService;
 	private Clock clock;
+
+	@GetMapping("/tarea")
+	String tarea() {
+		return "tarea";
+	}
 
 	@GetMapping("/tareas")
 	public ResponseEntity<?> getAllTareas() {
@@ -59,7 +65,7 @@ public class TareasController {
 		}
 		map.clear();
 		map.put("status", 0);
-		map.put("message", "ID Not found");
+		map.put("message", "ID Not found "+id);
 		return new ResponseEntity<>(map, HttpStatus.NOT_FOUND);
 
 	}
