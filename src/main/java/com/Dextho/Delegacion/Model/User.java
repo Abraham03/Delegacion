@@ -12,7 +12,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -32,11 +31,6 @@ public class User {
 	@Column (name = "enabled", nullable = false)
 	private boolean enabled;
 	
-	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "user_id")
-	private List<Tareas> tareas;
-	//@ManyToOne(fetch = FetchType.EAGER)
-	//private List<Role> roles;
 
 	@ManyToMany(fetch = FetchType.EAGER,cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinTable(
@@ -50,12 +44,11 @@ public class User {
 		super();
 	}
 
-	public User(String username, String password, boolean enabled, List<Tareas> tareas, List<Role> roles) {
+	public User(String username, String password, boolean enabled, List<Role> roles) {
 		super();
 		this.username = username;
 		this.password = password;
 		this.enabled = enabled;
-		this.tareas = tareas;
 		this.roles = roles;
 	}
 
@@ -89,14 +82,6 @@ public class User {
 
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
-	}
-
-	public List<Tareas> getTareas() {
-		return tareas;
-	}
-
-	public void setTareas(List<Tareas> tareas) {
-		this.tareas = tareas;
 	}
 
 	public List<Role> getRoles() {

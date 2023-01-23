@@ -3,6 +3,7 @@ package com.Dextho.Delegacion.Config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -19,7 +20,7 @@ public class SecurityConfig {
 	private UserDetailsService userDetailService;
 
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userDetailService);
+		auth.userDetailsService(userDetailService).passwordEncoder(passwordEncoder());
 	}
 
 	@Bean
@@ -30,15 +31,22 @@ public class SecurityConfig {
 	@Bean
 	protected SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		return http
+				.csrf().disable()
+				.cors().and()
 				.authorizeHttpRequests(auth -> {
-					auth.requestMatchers("/resources/**", "/styles/css/main.css",
-							"/Dextho/**")
-							.permitAll();
+					auth.requestMatchers(HttpMethod.GET, "/js/**").permitAll();
+					auth.requestMatchers("/styles/css/main.css","/login").permitAll();
+					auth.requestMatchers("/Dextho/**").hasAnyAuthority("ADMIN","USER");
 					auth.anyRequest().authenticated();
+					
 				})
+				.httpBasic()
+				.and()
 				.formLogin(form -> {
 					form.loginPage("/login");
 					form.permitAll();
+					form.defaultSuccessUrl("/Dextho/home");
+
 				})
 				.logout(logout -> logout.permitAll())
 				.build();

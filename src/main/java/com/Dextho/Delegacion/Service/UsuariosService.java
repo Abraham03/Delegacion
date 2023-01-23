@@ -13,5 +13,5 @@ public interface UsuariosService {
 	void updateUsuarios(User u);
 	boolean deleteUsuariosById(Long id);
 	User FindByUsername(String username);
-	
+	void addRoleToUser(Long user_id, Long roles_id);
 }

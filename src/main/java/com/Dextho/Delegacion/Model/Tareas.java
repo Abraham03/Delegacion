@@ -1,8 +1,6 @@
 package com.Dextho.Delegacion.Model;
 
-import java.time.LocalDateTime;
-
-
+import java.time.LocalDate;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -26,25 +24,29 @@ public class Tareas {
 	
 	@Column(name = "prioridad", nullable = false)
 	private String prioridad;
-	
-	@Column(name = "fecha_Modificado", nullable = false)
-	private LocalDateTime fecha_Modificado;
-	
-	@Column(name = "id_Usuario_Modificado")
-	private Long IdUsuarioModificado;
 
+	@Column(name = "estatus", nullable = false)
+	private String estatus;	
+	
+	@Column(name = "fecha_Creado", nullable = false)
+	private LocalDate fecha_Creado;
+
+	@Column(name = "activo", nullable = false)
+	private Boolean activo;
+	
 	public Tareas() {
 		super();
 	}
 
-	public Tareas(String nombre, String descripcion, String prioridad, LocalDateTime fecha_Modificado,
-			Long idUsuarioModificado) {
+	public Tareas(String nombre, String descripcion, String prioridad, String estatus, LocalDate fecha_Creado,
+			Boolean activo) {
 		super();
 		this.nombre = nombre;
 		this.descripcion = descripcion;
 		this.prioridad = prioridad;
-		this.fecha_Modificado = fecha_Modificado;
-		IdUsuarioModificado = idUsuarioModificado;
+		this.estatus = estatus;
+		this.fecha_Creado = fecha_Creado;
+		this.activo = activo;
 	}
 
 	public Long getId() {
@@ -79,20 +81,29 @@ public class Tareas {
 		this.prioridad = prioridad;
 	}
 
-	public LocalDateTime getFecha_Modificado() {
-		return fecha_Modificado;
+	public String getEstatus() {
+		return estatus;
 	}
 
-	public void setFecha_Modificado(LocalDateTime fecha_Modificado) {
-		this.fecha_Modificado = fecha_Modificado;
+	public void setEstatus(String estatus) {
+		this.estatus = estatus;
 	}
 
-	public Long getIdUsuarioModificado() {
-		return IdUsuarioModificado;
+	public LocalDate getFecha_Creado() {
+		return fecha_Creado;
 	}
 
-	public void setIdUsuarioModificado(Long idUsuarioModificado) {
-		IdUsuarioModificado = idUsuarioModificado;
+	public void setFecha_Creado(LocalDate fecha_Creado) {
+		this.fecha_Creado = fecha_Creado;
 	}
+
+	public Boolean getActivo() {
+		return activo;
+	}
+
+	public void setActivo(Boolean activo) {
+		this.activo = activo;
+	}
+
 
 }

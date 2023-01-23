@@ -9,5 +9,4 @@ import com.Dextho.Delegacion.Model.Tareas;
 public interface TareaRepository extends CrudRepository<Tareas, Long> {
 
 	
-	
 }

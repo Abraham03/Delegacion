@@ -15,5 +15,6 @@ public interface TareaService {
 	Optional<Tareas> getTareaById(Long id);
 	
 	void deleteTareaById(Long id);
+
 	
 }

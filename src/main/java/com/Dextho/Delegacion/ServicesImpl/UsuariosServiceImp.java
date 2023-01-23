@@ -20,6 +20,8 @@ public class UsuariosServiceImp implements UsuariosService {
 	@Autowired
 	private UserRepository usuariosRepository;
 
+	
+
 	public List<User> getAllUsuarios() {
 		return (List<User>) usuariosRepository.findAll();
 	}
@@ -52,5 +54,9 @@ public class UsuariosServiceImp implements UsuariosService {
 		
 		return usuariosRepository.findByUsername(username);
 	}
+
+	public void addRoleToUser(Long userId, Long roleId){
+		
+	}	
 
 }

@@ -25,7 +25,7 @@ public class MyUserDetailsService implements UserDetailsService {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
 		User usuarios = userRepository.findByUsername(username);
-		if (usuarios == null) {
+		if (usuarios == null || !usuarios.isEnabled()) {
 			throw new UsernameNotFoundException(username);
 		}
 		List<GrantedAuthority> authorities = getAuthorities(usuarios.getRoles());

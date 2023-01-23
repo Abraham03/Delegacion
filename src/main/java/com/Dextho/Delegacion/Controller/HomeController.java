@@ -15,5 +15,14 @@ public class HomeController{
 	String home() {
 		return "home";
 	}
+
+	@GetMapping("/tarea")
+	String tarea() {
+		return "tarea";
+	}
 	
+	@GetMapping("/usuario")
+	String usuarios() {
+		return "usuarios";
+	}
 }

@@ -23,7 +23,7 @@
 				<h3>Inicio de Sesión</h3>
 				<form th:action="@{/login}" method="post" class="rounded">
 					<div class="form-group input_login">
-						<input type="text" name="username" class="form-control"
+						<input type="text" id="username" name="username" class="form-control"
 							placeholder="Usuario">
 					</div>
 
@@ -32,12 +32,12 @@
 							placeholder="Contraseña">
 					</div>
 					<div class="form-group">
-						<input type="submit" class="btnSubmit btn-primary" value="Iniciar">
+						<input type="submit" class="btnSubmit btn-primary" value="Iniciar" th:onclick="SaveUser()">
 					</div>
 					
 				</form>
 				<div th:if="${param.error}" class="alert alert-success" role="alert">Invalid
-					username and password.</div>
+					username or password.</div>
 				<div th:if="${param.logout}" class="alert alert-warning"
 					role="alert">You have been logged out.</div>
 			</div>

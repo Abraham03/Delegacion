@@ -26,6 +26,8 @@ public class UserController {
 
 	@Autowired
 	UsuariosServiceImp userImp;
+
+
 	
 	@GetMapping("/todos")
 	public ResponseEntity<?> getAllUsers(){
@@ -39,7 +41,7 @@ public class UserController {
 		}
 		map.clear();
 		map.put("Status", 0);
-		map.put("Message", "Users Not found ");
+		map.put("Message", "Users Not found");
 		return new ResponseEntity<>(map, HttpStatus.NOT_FOUND);
 	}
 
