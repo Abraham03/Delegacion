@@ -1,3 +1,4 @@
+com/Dextho/Delegacion/Repository/UserRolesRepository.class
 com/Dextho/Delegacion/Model/Multas.class
 com/Dextho/Delegacion/Model/Role.class
 com/Dextho/Delegacion/Model/Tareas.class
@@ -6,16 +7,15 @@ com/Dextho/Delegacion/Repository/TareaRepository.class
 com/Dextho/Delegacion/Controller/LoginController.class
 com/Dextho/Delegacion/Repository/UserRepository.class
 com/Dextho/Delegacion/Service/CiudadanoService.class
-com/Dextho/Delegacion/Service/TareaService.class
 com/Dextho/Delegacion/Config/MyUserDetailsService.class
+com/Dextho/Delegacion/Controller/UserController.class
 com/Dextho/Delegacion/Config/SecurityConfig.class
 com/Dextho/Delegacion/ServicesImpl/UsuariosServiceImp.class
 com/Dextho/Delegacion/Controller/TareasController.class
 com/Dextho/Delegacion/Model/User.class
-com/Dextho/Delegacion/Service/UsuariosService.class
+com/Dextho/Delegacion/Model/UserRoles.class
 com/Dextho/Delegacion/Model/EstatusCiudadanos.class
 com/Dextho/Delegacion/ServicesImpl/CiudadanoServiceImpl.class
-com/Dextho/Delegacion/Service/AuthoritiesService.class
 com/Dextho/Delegacion/Model/UsuariosDocumentos.class
 com/Dextho/Delegacion/DelegacionApplication.class
 com/Dextho/Delegacion/Model/Ciudadanos.class
@@ -24,3 +24,4 @@ com/Dextho/Delegacion/Repository/AuthoritiesRepository.class
 com/Dextho/Delegacion/ServicesImpl/TareaServiceImpl.class
 com/Dextho/Delegacion/Model/Asistencias.class
 com/Dextho/Delegacion/ServicesImpl/AuthoritiesServiceImp.class
+com/Dextho/Delegacion/Controller/HomeController.class

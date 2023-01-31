@@ -7,10 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.Dextho.Delegacion.Model.Tareas;
 import com.Dextho.Delegacion.Repository.TareaRepository;
-import com.Dextho.Delegacion.Service.TareaService;
 
 @Service
-public class TareaServiceImpl implements TareaService {
+public class TareaServiceImpl {
 
 	@Autowired
 	private TareaRepository tareaRepository;
@@ -30,9 +29,6 @@ public class TareaServiceImpl implements TareaService {
 
 	}
 
-	public void deleteTareaById(Long id) {
-		tareaRepository.deleteById(id);
 
-	}
 
 }

@@ -9,7 +9,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @EnableWebSecurity
@@ -24,7 +23,7 @@ public class SecurityConfig {
 	}
 
 	@Bean
-	public PasswordEncoder passwordEncoder() {
+	public BCryptPasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
 
@@ -36,7 +35,8 @@ public class SecurityConfig {
 				.authorizeHttpRequests(auth -> {
 					auth.requestMatchers(HttpMethod.GET, "/js/**").permitAll();
 					auth.requestMatchers("/styles/css/main.css","/login").permitAll();
-					auth.requestMatchers("/Dextho/**").hasAnyAuthority("ADMIN","USER");
+					//auth.requestMatchers("/Dextho/**").hasAnyAuthority("ROLE_ADMIN","ROLE_USER");
+					auth.requestMatchers("/Dextho/**").hasRole("ADMIN");
 					auth.anyRequest().authenticated();
 					
 				})

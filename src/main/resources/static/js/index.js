@@ -101,7 +101,6 @@ function enviarDatos(data, accion, httpMetodo) {
     data: JSON.stringify(data),
     dataType: 'json',
     success: function (response) {
-      console.log(accion);
       table.ajax.reload();
       $(modal).modal('hide');
       switch (accion) {
@@ -230,6 +229,7 @@ function initTable() {
         }
       },
     ],
+    autoWidth:true,
     buttons: true,
     dom: 'B<"clear">lfrtip',
     buttons: {

@@ -1,5 +1,8 @@
 package com.Dextho.Delegacion.Model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,12 +19,14 @@ public class UserRoles {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+	@JsonManagedReference
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false, unique = true)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+	@JsonBackReference
     @ManyToOne
-    @JoinColumn(name = "roles_id", nullable = false, unique = true)
+    @JoinColumn(name = "roles_id", nullable = false)
     private Role role;
 
 	public User getUser() {

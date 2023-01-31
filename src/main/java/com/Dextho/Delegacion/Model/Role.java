@@ -3,6 +3,7 @@ package com.Dextho.Delegacion.Model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,10 +20,12 @@ public class Role {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+
 	@Column(name = "role_user", nullable = false)
 	private String name;
 	
 	@ManyToMany(mappedBy = "roles")
+	@JsonBackReference
 	private List<User> user;
 
 	public Role() {
@@ -46,6 +49,14 @@ public class Role {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public List<User> getUser() {
+		return user;
+	}
+
+	public void setUser(List<User> user) {
+		this.user = user;
 	}
 
 

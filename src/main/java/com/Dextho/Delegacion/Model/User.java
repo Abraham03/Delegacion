@@ -1,7 +1,6 @@
 package com.Dextho.Delegacion.Model;
 
 import java.util.List;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,7 +16,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name ="users")
 public class User {
-
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -27,7 +26,7 @@ public class User {
 	
 	@Column(name = "password", nullable = false)
 	private String password;
-	
+
 	@Column (name = "enabled", nullable = false)
 	private boolean enabled;
 	
