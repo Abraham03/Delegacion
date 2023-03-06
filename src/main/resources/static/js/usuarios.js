@@ -26,7 +26,6 @@ $(document).ready(function () {
     var row = $(this).closest("tr");
     var data = $("#table_usuarios").DataTable().row(row).data();
     id = data.id;
-    console.log(data);
     const newData = {
       usernameEdit: data.username,
       activo: data.enabled,
