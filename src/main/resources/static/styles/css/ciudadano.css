@@ -1,0 +1,24 @@
+/*
+font-family: 'Anek Tamil', sans-serif;
+font-family: 'Belanosima', sans-serif;
+font-family: 'Cormorant', serif;
+font-family: 'Cormorant Garamond', serif;
+font-family: 'Libre Franklin', sans-serif;
+font-family: 'Noto Sans Cypro Minoan', sans-serif;
+font-family: 'Roboto Slab', serif;
+*/
+body{
+    font-family: 'Cormorant Garamond', serif;
+}
+
+.info-card {
+    border: 1px solid #e0e0e0;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.info-card h5 {
+    margin-bottom: 10px;
+}

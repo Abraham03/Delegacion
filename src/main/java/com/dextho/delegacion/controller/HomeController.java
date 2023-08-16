@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @CrossOrigin(origins = "*")
 @RequestMapping("/Dextho")
 
-public class HomeController{
+public class HomeController {
 
 	@GetMapping("/home")
 	String home() {
@@ -20,7 +20,7 @@ public class HomeController{
 	String tarea() {
 		return "tarea";
 	}
-	
+
 	@GetMapping("/usuario")
 	String usuarios() {
 		return "usuarios";
@@ -30,4 +30,25 @@ public class HomeController{
 	String documentos() {
 		return "documentos";
 	}
+
+	@GetMapping("/ciudadanos")
+	String ciudadanos() {
+		return "ciudadanos";
+	}
+
+	@GetMapping("/multas")
+	String multas() {
+		return "multas";
+	}
+
+	@GetMapping("/estatus")
+	String estatus() {
+		return "estatus";
+	}
+
+	@GetMapping("/cargos")
+	String cargos() {
+		return "cargos";
+	}
+
 }

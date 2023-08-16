@@ -13,6 +13,7 @@
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
 	<script type="text/javascript" src="https://cdn.datatables.net/v/bs5/jq-3.6.0/jszip-2.5.0/dt-1.13.1/b-2.3.3/b-colvis-2.3.3/b-html5-2.3.3/date-1.2.0/fh-3.3.1/kt-2.8.0/r-2.4.0/sp-2.1.0/sl-1.5.0/datatables.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jqc-1.12.4/dt-1.13.1/b-2.3.2/sl-1.5.0/datatables.min.css"/>
+	<link th:href="@{/styles/css/main.css}" rel="stylesheet" type="text/css">
 </head>
 <header>
 	<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
@@ -30,10 +31,22 @@
 						<a class="nav-link" href="http://localhost:8080/Dextho/usuario">Usuarios</a>
 					</li>
 					<li class="nav-item">
+						<a class="nav-link" href="http://localhost:8080/Dextho/ciudadanos">Ciudadanos</a>
+					</li>
+					<li class="nav-item">
 						<a class="nav-link" href="http://localhost:8080/Dextho/tarea">Tareas</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" href="http://localhost:8080/Dextho/documentos">Documentos</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="http://localhost:8080/Dextho/multas">Multas</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="http://localhost:8080/Dextho/cargos">Cargos</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="http://localhost:8080/Dextho/estatus">Estatus</a>
 					</li>
 				</ul>
 			</div>
@@ -46,7 +59,7 @@
 		<div class="row py-lg-5">
 			<div class="col-lg-6 col-md-8 mx-auto">
 				<h1 class="fw-light">Delegación Dextho</h1>
-				<p class="lead text-muted">Sección de Tareas, se puede visualizar, dar de alta, baja y eliminar tareas.
+				<p class="lead text-muted">Sección de Tareas, se puede visualizar, dar de alta, y eliminar tareas.
 				</p>
 			</div>
 		</div>

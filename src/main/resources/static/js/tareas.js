@@ -2,6 +2,7 @@ var table;
 var dataEditar;
 var id;
 var modal;
+
 const inputsIds = ["nombre", "descripcion"];
 const editIds = [
   "nombreEditar",
@@ -43,7 +44,14 @@ $(document).ready(function () {
 
   $("#editarTarea").on("click", function () {
     const data = recolectarDatosModificados();
-    enviarDatos(data, "editar", "PUT");
+    let valido = true;
+    if (data ==="" || data === undefined) {
+      valido = false;
+    }
+    if(valido){
+      enviarDatos(data, "editar", "PUT");
+    }
+    
   });
 
   $("#guardarTarea").on("click", function () {
@@ -150,11 +158,18 @@ function asignarValores(data) {
 }
 
 function recolectarDatosModificados() {
+  var texto = "Llenar todos los campos";
   const nombre = $("#nombreEditar").val();
   const descripcion = $("#descripcionEditar").val();
   const prioridad = $("#prioridadEditar").val();
   const estatus = $("#estatusEditar").val();
   const activo = JSON.parse($("input[name='eliminado']:checked").val());
+
+  if (nombre === "" || descripcion === "" || prioridad === "Prioridad..." || estatus === "Estatus...") {
+    $(".alert-danger p").text(texto);
+    $("#modalServidor").modal("show");
+    return;
+  }
 
   return { nombre, descripcion, prioridad, estatus, activo };
 }

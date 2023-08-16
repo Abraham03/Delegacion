@@ -279,12 +279,6 @@ function initTable() {
       },
     ],
     autoWidth: true,
-    buttons: true,
-    dom: 'B<"clear">lfrtip',
-    buttons: {
-      name: "primary",
-      buttons: ["excel", "pdf"],
-    },
     select: true,
     autoFill: true,
     language: {

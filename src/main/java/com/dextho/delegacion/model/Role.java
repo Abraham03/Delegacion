@@ -1,6 +1,5 @@
 package com.dextho.delegacion.model;
 
-
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -19,11 +18,10 @@ public class Role {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
 
 	@Column(name = "role_user", nullable = false)
 	private String name;
-	
+
 	@ManyToMany(mappedBy = "roles")
 	@JsonBackReference
 	private List<User> user;
@@ -59,6 +57,4 @@ public class Role {
 		this.user = user;
 	}
 
-
-	
 }

@@ -35,7 +35,7 @@ public class SecurityConfig {
 				.cors().and()
 				.authorizeHttpRequests(auth -> {
 					auth.requestMatchers(HttpMethod.GET, "/js/**").permitAll();
-					auth.requestMatchers("/styles/css/main.css","/login").permitAll();
+					auth.requestMatchers("/styles/css/main.css","/login","/home").permitAll();
 					auth.requestMatchers("/Dextho/**").hasRole("ADMIN");
 					auth.anyRequest().authenticated();
 					
@@ -49,7 +49,7 @@ public class SecurityConfig {
 
 				})
 				.exceptionHandling(exceptionHandling ->{
-					exceptionHandling.accessDeniedPage("/access-denied");
+					exceptionHandling.accessDeniedPage("/acceso-denegado");
 					exceptionHandling.authenticationEntryPoint(authenticationEntryPoint());
 				})
 				.logout(logout -> logout.permitAll())
