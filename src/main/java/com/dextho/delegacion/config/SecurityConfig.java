@@ -35,10 +35,10 @@ public class SecurityConfig {
 				.cors().and()
 				.authorizeHttpRequests(auth -> {
 					auth.requestMatchers(HttpMethod.GET, "/js/**").permitAll();
-					auth.requestMatchers("/styles/css/main.css","/login","/home").permitAll();
+					auth.requestMatchers("/styles/css/main.css", "/login", "/home").permitAll();
 					auth.requestMatchers("/Dextho/**").hasRole("ADMIN");
 					auth.anyRequest().authenticated();
-					
+
 				})
 				.httpBasic()
 				.and()
@@ -48,7 +48,7 @@ public class SecurityConfig {
 					form.defaultSuccessUrl("/Dextho/home");
 
 				})
-				.exceptionHandling(exceptionHandling ->{
+				.exceptionHandling(exceptionHandling -> {
 					exceptionHandling.accessDeniedPage("/acceso-denegado");
 					exceptionHandling.authenticationEntryPoint(authenticationEntryPoint());
 				})
@@ -57,8 +57,8 @@ public class SecurityConfig {
 	}
 
 	@Bean
-	public AuthenticationEntryPoint authenticationEntryPoint(){
-		return (request, response, exception) ->{
+	public AuthenticationEntryPoint authenticationEntryPoint() {
+		return (request, response, exception) -> {
 			response.sendRedirect("/login");
 		};
 	}

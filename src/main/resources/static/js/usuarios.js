@@ -244,7 +244,10 @@ function initTable() {
       { data: "id" },
       { data: "username" },
       { data: "password" },
-      { data: "enabled" },
+      { data: "enabled",
+      render: function (data, type, row){
+        return data ? "Activo" : "Inactivo";
+      } },
       {
         data: "roles",
         render: function (data, type, row) {
