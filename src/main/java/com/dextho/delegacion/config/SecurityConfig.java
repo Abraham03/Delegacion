@@ -45,7 +45,7 @@ public class SecurityConfig {
 				.formLogin(form -> {
 					form.loginPage("/login");
 					form.permitAll();
-					form.defaultSuccessUrl("/Dextho/home");
+					form.defaultSuccessUrl("/Dextho/home", true);
 
 				})
 				.exceptionHandling(exceptionHandling -> {

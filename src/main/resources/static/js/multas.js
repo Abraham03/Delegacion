@@ -192,7 +192,7 @@ $("#grupo").change(function () {
   // Obtener el valor seleccionado del select de grupo
   var grupoSeleccionado = $(this).val();
   $.getJSON(
-    "http://localhost:8080/Dextho/ciudadano/ByGrupo/" + grupoSeleccionado,
+    "/Dextho/ciudadano/ByGrupo/" + grupoSeleccionado,
     function (response) {
       // Aquí procesas la respuesta JSON
       // data es un array de objetos JSON, cada objeto representa un ciudadano
@@ -223,14 +223,14 @@ function enviarDatos(data, accion, httpMetodo) {
   var url;
   switch (accion) {
     case "editar":
-      url = "http://localhost:8080/Dextho/multas/actualizar/" + id;
+      url = "/Dextho/multas/actualizar/" + id;
       modal = "#modalEditar";
       break;
     case "eliminar":
-      url = "http://localhost:8080/Dextho/multas/eliminar/" + id;
+      url = "/Dextho/multas/eliminar/" + id;
       break;
     case "guardar":
-      url = "http://localhost:8080/Dextho/multas/guardar";
+      url = "/Dextho/multas/guardar";
       modal = "#modalAgregar";
       break;
     default:
@@ -348,7 +348,7 @@ function initTable() {
     table = $("#table_tareas").DataTable({
       processing:true,
       ajax: {
-        url: "http://localhost:8080/Dextho/multas/todos",
+        url: "/Dextho/multas/todos",
         error: function (xhr, status, error) {
           $(".alert-danger p").text(xhr.responseJSON.message);
           $("#modalServidor").modal("show");

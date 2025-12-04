@@ -88,15 +88,15 @@ function enviarDatos(user, accion, httpMetodo) {
   var url;
   switch (accion) {
     case "editar":
-      url = "http://localhost:8080/Dextho/usuarios/actualizar/" + id;
+      url = "/Dextho/usuarios/actualizar/" + id;
       modal = "#modalEditar";
       break;
     case "eliminar":
-      url = "http://localhost:8080/Dextho/usuarios/eliminar/" + id;
+      url = "/Dextho/usuarios/eliminar/" + id;
       break;
     case "guardar":
       user.enabled = true;
-      url = "http://localhost:8080/Dextho/usuarios/guardar";
+      url = "/Dextho/usuarios/guardar";
       modal = "#modalAgregar";
       break;
     default:
@@ -221,7 +221,7 @@ function limpiarInputsEdit(inputsIds) {
 function initTable() {
   table = $("#table_usuarios").DataTable({
     ajax: {
-      url: "http://localhost:8080/Dextho/usuarios/todos",
+      url: "/Dextho/usuarios/todos",
       dataSrc: "Data",
       error: function (xhr, status, error) {
         $(".alert-danger p").text(xhr.responseJSON.message);

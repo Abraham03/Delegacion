@@ -91,14 +91,14 @@ function enviarDatos(data, accion, httpMetodo) {
 
   switch (accion) {
     case "editar":
-      url = "http://localhost:8080/Dextho/tareas/actualizar/" + id;
+      url = "/Dextho/tareas/actualizar/" + id;
       modal = "#modalEditar";
       break;
     case "eliminar":
-      url = "http://localhost:8080/Dextho/tareas/eliminar/" + id;
+      url = "/Dextho/tareas/eliminar/" + id;
       break;
     case "guardar":
-      url = "http://localhost:8080/Dextho/tareas/guardar";
+      url = "/Dextho/tareas/guardar";
       modal = "#modalAgregar";
       break;
     default:
@@ -216,7 +216,7 @@ function initTable() {
   table = $("#table_tareas").DataTable({
     processing:true,
     ajax: {
-      url: "http://localhost:8080/Dextho/tareas/lista",
+      url: "/Dextho/tareas/lista",
       error: function (xhr, status, error) {
         $(".alert-danger p").text(xhr.responseJSON.message);
         $("#modalServidor").modal("show");
@@ -262,7 +262,20 @@ function initTable() {
     dom: 'B<"clear">lfrtip',
     buttons: {
       name: "primary",
-      buttons: ["excel", "pdf"],
+      buttons: [
+        {
+          extend: "excel",
+          exportOptions: {
+            columns: [1, 2, 3, 4, 5, 6],
+          },
+        },
+        {
+          extend: "pdf",
+          exportOptions: {
+            columns: [1, 2, 3, 4, 5, 6],
+          },
+        },
+      ]
     },
     select: true,
     autoFill: true,

@@ -38,7 +38,7 @@ $("#salirGuardar").click(function () {
 
 function obtenerPDF(data) {
   $.ajax({
-    url: "http://localhost:8080/Dextho/documentos/pdf",
+    url: "/Dextho/documentos/pdf",
     type: "GET",
     data: { documentoId: data.id },
     xhrFields: {
@@ -70,7 +70,7 @@ function obtenerPDF(data) {
 
 function enviarDatos(data) {
   var url, contentype;
-  url = "http://localhost:8080/Dextho/documentos/guardar";
+  url = "/Dextho/documentos/guardar";
   modal = "#modalAgregar";
 
   // Crear un objeto FormData y agregar los datos y el archivo
@@ -103,7 +103,7 @@ function initTable() {
   table = $("#table_tareas").DataTable({
     processing: true,
     ajax: {
-      url: "http://localhost:8080/Dextho/documentos/todos",
+      url: "/Dextho/documentos/todos",
       error: function (xhr, status, error) {
         $(".alert-danger p").text(xhr.responseJSON.message);
         $("#modalServidor").modal("show");
@@ -157,7 +157,13 @@ function initTable() {
         {
           extend: "pdf",
           exportOptions: {
-            columns: [1, 2, 3, 4, 5, 6],
+            columns: [2, 3, 4, 5, 6, 7, 8, 9],
+          },
+        },
+        {
+          extend: "excel",
+          exportOptions: {
+            columns: [2, 3, 4, 5, 6, 7, 8, 9],
           },
         },
       ],
@@ -184,7 +190,7 @@ $("#grupo").change(function () {
   // Obtener el valor seleccionado del select de grupo
   var grupoSeleccionado = $(this).val();
   $.getJSON(
-    "http://localhost:8080/Dextho/ciudadano/ByGrupo/" + grupoSeleccionado,
+    "/Dextho/ciudadano/ByGrupo/" + grupoSeleccionado,
     function (response) {
       // Aquí procesas la respuesta JSON
       // data es un array de objetos JSON, cada objeto representa un ciudadano

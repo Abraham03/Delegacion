@@ -103,14 +103,14 @@ $(document).ready(function () {
     var url;
     switch (accion) {
       case "editar":
-        url = "http://localhost:8080/Dextho/estatus/actualizar/" + id;
+        url = "/Dextho/estatus/actualizar/" + id;
         modal = "#modalEditar";
         break;
       case "eliminar":
-        url = "http://localhost:8080/Dextho/cargos/eliminar/" + id;
+        url = "/Dextho/cargos/eliminar/" + id;
         break;
       case "guardar":
-        url = "http://localhost:8080/Dextho/estatus/guardar";
+        url = "/Dextho/estatus/guardar";
         modal = "#modalAgregar";
         break;
       default:
@@ -192,7 +192,7 @@ function initTable() {
     table = $("#table_tareas").DataTable({
       processing:true,
       ajax: {
-        url: "http://localhost:8080/Dextho/estatus/todos",
+        url: "/Dextho/estatus/todos",
         error: function (xhr, status, error) {
           $(".alert-danger p").text(xhr.responseJSON.message);
           $("#modalServidor").modal("show");

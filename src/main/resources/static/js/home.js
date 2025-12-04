@@ -8,7 +8,7 @@ $(document).ready(function () {
 
 function grafica() {
   // Hacer una solicitud HTTP para obtener los datos desde el backend
-  fetch("http://localhost:8080/Dextho/ciudadano/todos")
+  fetch("/Dextho/ciudadano/todos")
     .then((response) => response.json())
     .then((data) => {
       let totalDeudas = 0;

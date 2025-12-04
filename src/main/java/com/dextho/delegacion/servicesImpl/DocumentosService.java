@@ -13,8 +13,8 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class DocumentosService {
 
-    private final String RUTA_DOCUMENTOS = "/home/abe-dev/Documents/DocDextho/";
-
+    //private final String RUTA_DOCUMENTOS = "C:/Users/DELEGACION DEXTHO/Documents/Aplicacion Dextho/app/Documentos/";
+      private final String RUTA_DOCUMENTOS = "C:/Users/Dell/OneDrive/Documents/Dextho Docs";
     public String guardarDocumentoEnCarpeta(Long ciudadanoId, String carpetaTipo, String nombreArchivo,
             MultipartFile file) {
 

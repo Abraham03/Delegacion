@@ -142,14 +142,14 @@ function enviarDatos(data, accion, httpMetodo) {
   var url;
   switch (accion) {
     case "editar":
-      url = "http://localhost:8080/Dextho/cargos/actualizar/" + id;
+      url = "localhost/Dextho/cargos/actualizar/" + id;
       modal = "#modalEditar";
       break;
     case "eliminar":
-      url = "http://localhost:8080/Dextho/cargos/eliminar/" + id;
+      url = "/Dextho/cargos/eliminar/" + id;
       break;
     case "guardar":
-      url = "http://localhost:8080/Dextho/cargos/guardar";
+      url = "/Dextho/cargos/guardar";
       modal = "#modalAgregar";
       break;
     default:
@@ -205,7 +205,7 @@ $("#grupo").change(function () {
   // Obtener el valor seleccionado del select de grupo
   var grupoSeleccionado = $(this).val();
   $.getJSON(
-    "http://localhost:8080/Dextho/ciudadano/ByGrupo/" + grupoSeleccionado,
+    "/Dextho/ciudadano/ByGrupo/" + grupoSeleccionado,
     function (response) {
       // Aquí procesas la respuesta JSON
       // data es un array de objetos JSON, cada objeto representa un ciudadano
@@ -236,7 +236,7 @@ function initTable() {
     table = $("#table_tareas").DataTable({
       processing:true,
       ajax: {
-        url: "http://localhost:8080/Dextho/cargos/todos",
+        url: "/Dextho/cargos/todos",
         error: function (xhr, status, error) {
           $(".alert-danger p").text(xhr.responseJSON.message);
           $("#modalServidor").modal("show");
@@ -286,13 +286,13 @@ function initTable() {
           {
             extend: "excel",
             exportOptions: {
-              columns: [1, 2, 3,],
+              columns: [2, 3, 4, 5, 6],
             },
           },
           {
             extend: "pdf",
             exportOptions: {
-              columns: [1, 2, 3],
+              columns: [2, 3, 4 ,5, 6],
             },
           },
         ],

@@ -97,14 +97,14 @@ function enviarDatos(data, accion, httpMetodo) {
   var url;
   switch (accion) {
     case "editar":
-      url = "http://localhost:8080/Dextho/ciudadano/actualizar/" + id;
+      url = "/Dextho/ciudadano/actualizar/" + id;
       modal = "#modalEditar";
       break;
     case "eliminar":
-      url = "http://localhost:8080/Dextho/tareas/eliminar/" + id;
+      url = "/Dextho/tareas/eliminar/" + id;
       break;
     case "guardar":
-      url = "http://localhost:8080/Dextho/ciudadano/guardar";
+      url = "/Dextho/ciudadano/guardar";
       modal = "#modalAgregar";
       break;
     default:
@@ -150,7 +150,7 @@ function enviarDatos(data, accion, httpMetodo) {
 function obtenerEstatus() {
   return new Promise(function (resolve, reject) {
     $.getJSON(
-      "http://localhost:8080/Dextho/estatus/todos",
+      "/Dextho/estatus/todos",
       function (response) {
         if (response.status === 0) {
           // En caso de error o datos vacíos, rechazamos la Promise con un mensaje de error
@@ -212,8 +212,18 @@ function recolectarDatos() {
     dato["representante"] = "No";
   }
 
+
   // Validar que todos los campos estén completos
-  if (Object.values(dato).some((valor) => valor === "")) {
+
+  const camposAExcluir = ["fecha_Nacimiento", "fecha_Ingreso"];
+
+  // Verifica si existe algun campo vacio que NO sea una de las fechas
+  const campoObligatorioVacio = Object.entries(dato).some(([clave, valor]) => {
+    // Si el valor esta vacio y la clave no esta en la lista de exclusion (fechas)
+    return valor === "" && !camposAExcluir.includes(clave);
+  })
+
+  if (campoObligatorioVacio) {
     $(".alert-danger p").text("Llenar todos los campos");
     $("#modalServidor").modal("show");
     return;
@@ -268,7 +278,16 @@ function recolectarDatosEditar() {
   }
 
   // Validar que todos los campos estén completos
-  if (Object.values(dato).some((valor) => valor === "")) {
+
+  const camposAExcluir = ["fecha_Nacimiento", "fecha_Ingreso"];
+
+  // Verifica si existe algun campo vacio que NO sea una de las fechas
+  const campoObligatorioVacio = Object.entries(dato).some(([clave, valor]) => {
+    // Si el valor esta vacio y la clave no esta en la lista de exclusion (fechas)
+    return valor === "" && !camposAExcluir.includes(clave);
+  })
+
+  if (campoObligatorioVacio) {
     $(".alert-danger p").text("Llenar todos los campos");
     $("#modalServidor").modal("show");
     return;
@@ -331,7 +350,7 @@ function initTable() {
   table = $("#table_tareas").DataTable({
     processing: true,
     ajax: {
-      url: "http://localhost:8080/Dextho/ciudadano/todos",
+      url: "/Dextho/ciudadano/todos",
       error: function (xhr, status, error) {
         $(".alert-danger p").text(xhr.responseJSON.message);
         $("#modalServidor").modal("show");
