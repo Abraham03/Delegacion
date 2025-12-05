@@ -223,7 +223,16 @@ function initTable() {
     ajax: {
       url: "/Dextho/usuarios/todos",
       dataSrc: "Data",
+      type: "GET",
       error: function (xhr, status, error) {
+        var mensajeError = "Ocurrió un error al cargar los datos.";
+
+        if (xhr.responseJSON && xhr.responseJSON.message) {
+          mensajeError = xhr.responseJSON.message;
+        } else if (xhr.responseText) {
+          mensajeError = "Error del servidor: " + xhr.status;
+        }
+
         $(".alert-danger p").text(xhr.responseJSON.message);
         $("#modalServidor").modal("show");
         table.clear();
@@ -241,9 +250,9 @@ function initTable() {
       },
     },
     columns: [
-      { data: "id" },
-      { data: "username" },
-      { data: "password" },
+      { data: "id",defaultContent: "" },
+      { data: "username",defaultContent: "" },
+      { data: "password",defaultContent: "" },
       { data: "enabled",
       render: function (data, type, row){
         return data ? "Activo" : "Inactivo";

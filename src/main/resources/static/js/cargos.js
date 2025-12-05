@@ -237,7 +237,17 @@ function initTable() {
       processing:true,
       ajax: {
         url: "/Dextho/cargos/todos",
+        type: "GET",
         error: function (xhr, status, error) {
+
+          var mensajeError = "Ocurrió un error al cargar los datos.";
+
+          if (xhr.responseJSON && xhr.responseJSON.message) {
+            mensajeError = xhr.responseJSON.message;
+          } else if (xhr.responseText) {
+            mensajeError = "Error del servidor: " + xhr.status;
+          }
+
           $(".alert-danger p").text(xhr.responseJSON.message);
           $("#modalServidor").modal("show");
           table.clear();
@@ -255,13 +265,13 @@ function initTable() {
         },
       },
       columns: [
-        { data: "id" },
-        { data: "ciudadano_id" },
-        { data: "nombreUsuario" },
-        { data: "grupo" },
-        { data: "nombre" },
-        { data: "descripcion" },
-        { data: "fecha" },
+        { data: "id", defaultContent: "" },
+        { data: "ciudadano_id", defaultContent: "" },
+        { data: "nombreUsuario", defaultContent: "" },
+        { data: "grupo", defaultContent: "" },
+        { data: "nombre", defaultContent: "" },
+        { data: "descripcion", defaultContent: "" },
+        { data: "fecha", defaultContent: "" },
         {
           data: null,
           render: function (data, type, row) {

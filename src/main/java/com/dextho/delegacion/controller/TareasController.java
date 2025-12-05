@@ -26,97 +26,89 @@ import com.dextho.delegacion.servicesImpl.TareaServiceImpl;
 @RequestMapping("/Dextho/tareas")
 public class TareasController {
 
-	@Autowired
-	public TareaServiceImpl tareaService;
+    @Autowired
+    public TareaServiceImpl tareaService;
 
+    @GetMapping("/lista")
+    public ResponseEntity<?> getAllTareas() {
+        Map<String, Object> map = new LinkedHashMap<>();
+        List<Tareas> listaTareas = tareaService.getAllTareas();
+        map.put("Status", 1);
+        map.put("data", listaTareas);
+        return new ResponseEntity<>(map, HttpStatus.OK);
+    }
 
-	@GetMapping("/lista")
-	public ResponseEntity<?> getAllTareas() {
-		Map<String, Object> map = new LinkedHashMap<>();
-		List<Tareas> listaTareas = tareaService.getAllTareas();
-		if (!listaTareas.isEmpty()) {
-			map.put("Status", 1);
-			map.put("data", listaTareas);
-			return new ResponseEntity<>(map, HttpStatus.OK);
-		} else {
-			map.clear();
-			map.put("status", 0);
-			map.put("message", "Datos no encontrados");
-			return new ResponseEntity<>(map, HttpStatus.NOT_FOUND);
-		}
-	}
+    @GetMapping("/buscar/{id}")
+    public ResponseEntity<?> getTareasById(@PathVariable("id") Long id) {
+        Map<String, Object> map = new LinkedHashMap<>();
+        Optional<Tareas> tareasData = tareaService.getTareaById(id);
+        if (!tareasData.isEmpty()) {
+            map.put("Status", 1);
+            map.put("data", tareasData);
+            return new ResponseEntity<>(map, HttpStatus.OK);
 
-	@GetMapping("/buscar/{id}")
-	public ResponseEntity<?> getTareasById(@PathVariable("id") Long id) {
-		Map<String, Object> map = new LinkedHashMap<>();
-		Optional<Tareas> tareasData = tareaService.getTareaById(id);
-		if (!tareasData.isEmpty()) {
-			map.put("Status", 1);
-			map.put("data", tareasData);
-			return new ResponseEntity<>(map, HttpStatus.OK);
+        } else {
+            map.clear();
+            map.put("status", 0);
+            map.put("message", "ID No encontrado: " + id);
+            return new ResponseEntity<>(map, HttpStatus.NOT_FOUND);
+        }
+    }
 
-		}else{
-		map.clear();
-		map.put("status", 0);
-		map.put("message", "ID No encontrado: "+id);
-		return new ResponseEntity<>(map, HttpStatus.NOT_FOUND);
-		}
-	}
+    @PostMapping("/guardar")
+    public ResponseEntity<?> saveTarea(@RequestBody Tareas tarea) {
+        Map<String, Object> map = new LinkedHashMap<>();
+        tarea.setFecha_Creado(LocalDate.now());
+        tarea.setActivo(true);
+        Tareas savedTarea = tareaService.saveTarea(tarea);
+        if (savedTarea != null) {
+            map.put("datos", savedTarea);
+            return new ResponseEntity<>(map, HttpStatus.CREATED);
+        } else {
+            map.put("status", 0);
+            map.put("message", "Datos no Guardados");
+            return new ResponseEntity<>(map, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
-	@PostMapping("/guardar")
-	public ResponseEntity<?> saveTarea(@RequestBody Tareas tarea) {
-		Map<String, Object> map = new LinkedHashMap<>();
-		tarea.setFecha_Creado(LocalDate.now());
-		tarea.setActivo(true);
-		Tareas savedTarea = tareaService.saveTarea(tarea);
-		if (savedTarea != null) {
-			map.put("datos", savedTarea);
-			return new ResponseEntity<>(map, HttpStatus.CREATED);
-		}else{
-		map.put("status", 0);
-		map.put("message", "Datos no Guardados");
-		return new ResponseEntity<>(map, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
+    @PutMapping("/actualizar/{id}")
+    public ResponseEntity<?> updateTarea(@PathVariable("id") Long id, @RequestBody Tareas tarea) {
+        Map<String, Object> map = new LinkedHashMap<>();
+        Optional<Tareas> tareas = tareaService.getTareaById(id);
+        if (tareas.isPresent()) {
+            Tareas _tarea = tareas.get();
+            _tarea.setNombre(tarea.getNombre());
+            _tarea.setDescripcion(tarea.getDescripcion());
+            _tarea.setPrioridad(tarea.getPrioridad());
+            _tarea.setEstatus(tarea.getEstatus());
+            _tarea.setActivo(tarea.getActivo());
+            tareaService.saveTarea(_tarea);
+            map.put("datos", tarea);
+            return new ResponseEntity<>(map, HttpStatus.OK);
 
-	@PutMapping("/actualizar/{id}")
-	public ResponseEntity<?> updateTarea(@PathVariable("id") Long id, @RequestBody Tareas tarea) {
-		Map<String, Object> map = new LinkedHashMap<>();
-		Optional<Tareas> tareas = tareaService.getTareaById(id);
-		if (tareas.isPresent()) {
-			Tareas _tarea = tareas.get();
-			_tarea.setNombre(tarea.getNombre());
-			_tarea.setDescripcion(tarea.getDescripcion());
-			_tarea.setPrioridad(tarea.getPrioridad());
-			_tarea.setEstatus(tarea.getEstatus());
-			_tarea.setActivo(tarea.getActivo());
-			tareaService.saveTarea(_tarea);
-			map.put("datos", tarea);
-			return new ResponseEntity<>(map, HttpStatus.OK);
+        } else {
+            map.clear();
+            map.put("status", 0);
+            map.put("message", "Datos no actualizados");
+            return new ResponseEntity<>(map, HttpStatus.NOT_FOUND);
+        }
+    }
 
-		}else{
-		map.clear();
-		map.put("status", 0);
-		map.put("message", "Datos no actualizados");
-		return new ResponseEntity<>(map, HttpStatus.NOT_FOUND);
-		}
-	}
-
-	// @PreAuthorize("hasRole('ADMIN')")
-	@PutMapping("/eliminar/{id}")
-	public ResponseEntity<?> deleteTareaById(@PathVariable("id") Long id) {
-		Map<String, Object> map = new LinkedHashMap<>();
-		try {
-			Tareas tarea = tareaService.getTareaById(id).get();
-			tarea.setActivo(false);
-			tareaService.saveTarea(tarea);
-			map.put("status", 1);
-			map.put("message", "Tarea eliminada");
-			} catch (Exception e) {
-			map.put("status", 0);
-			map.put("message", "Error al eliminar tarea, ID: "+id+ " no encontrado");
-			return new ResponseEntity<>(map, HttpStatus.NOT_FOUND);
-			}
-			return new ResponseEntity<>(map, HttpStatus.OK);
-	}
+    // @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/eliminar/{id}")
+    public ResponseEntity<?> deleteTareaById(@PathVariable("id") Long id) {
+        Map<String, Object> map = new LinkedHashMap<>();
+        try {
+            Tareas tarea = tareaService.getTareaById(id).get();
+            tarea.setActivo(false);
+            tareaService.saveTarea(tarea);
+            map.put("status", 1);
+            map.put("message", "Tarea eliminada");
+        } catch (Exception e) {
+            map.put("status", 0);
+            map.put("message", "Error al eliminar tarea, ID: " + id + " no encontrado");
+            return new ResponseEntity<>(map, HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(map, HttpStatus.OK);
+    }
 }

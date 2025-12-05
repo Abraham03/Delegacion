@@ -32,16 +32,10 @@ public class CargosController {
     public ResponseEntity<?> getAllCargos() {
         Map<String, Object> map = new LinkedHashMap<>();
         List<Cargos> listaCargos = cargosServiceImp.getAllCargos();
-        if (!listaCargos.isEmpty()) {
-            map.put("Status", 1);
-            map.put("data", listaCargos);
-            return new ResponseEntity<>(map, HttpStatus.OK);
-        } else {
-            map.clear();
-            map.put("Status", 0);
-            map.put("message", "Datos no encontrados");
-            return new ResponseEntity<>(map, HttpStatus.NOT_FOUND);
-        }
+        map.put("Status", 1);
+        map.put("data", listaCargos);
+        return new ResponseEntity<>(map, HttpStatus.OK);
+
     }
 
     @PostMapping("/guardar")

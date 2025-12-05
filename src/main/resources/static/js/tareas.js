@@ -217,7 +217,17 @@ function initTable() {
     processing:true,
     ajax: {
       url: "/Dextho/tareas/lista",
+      type: "GET",
       error: function (xhr, status, error) {
+
+        var mensajeError = "Ocurrió un error al cargar los datos.";
+
+        if (xhr.responseJSON && xhr.responseJSON.message) {
+          mensajeError = xhr.responseJSON.message;
+        } else if (xhr.responseText) {
+          mensajeError = "Error del servidor: " + xhr.status;
+        }
+
         $(".alert-danger p").text(xhr.responseJSON.message);
         $("#modalServidor").modal("show");
         table.clear();
@@ -235,13 +245,13 @@ function initTable() {
       },
     },
     columns: [
-      { data: "id" },
-      { data: "nombre" },
-      { data: "descripcion" },
-      { data: "prioridad" },
-      { data: "estatus" },
-      { data: "fecha_Creado" },
-      { data: "activo" },
+      { data: "id", defaultContent: "" },
+      { data: "nombre", defaultContent: "" },
+      { data: "descripcion", defaultContent: "" },
+      { data: "prioridad", defaultContent: "" },
+      { data: "estatus", defaultContent: "" },
+      { data: "fecha_Creado", defaultContent: "" },
+      { data: "activo", defaultContent: "" },
       {
         data: null,
         render: function (data, type, row) {

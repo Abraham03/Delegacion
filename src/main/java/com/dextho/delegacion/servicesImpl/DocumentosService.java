@@ -14,7 +14,8 @@ import org.springframework.web.multipart.MultipartFile;
 public class DocumentosService {
 
     //private final String RUTA_DOCUMENTOS = "C:/Users/DELEGACION DEXTHO/Documents/Aplicacion Dextho/app/Documentos/";
-      private final String RUTA_DOCUMENTOS = "C:/Users/Dell/OneDrive/Documents/Dextho Docs";
+    private final String RUTA_DOCUMENTOS = "C:/Users/Dell/OneDrive/Documents/Dextho/";
+
     public String guardarDocumentoEnCarpeta(Long ciudadanoId, String carpetaTipo, String nombreArchivo,
             MultipartFile file) {
 

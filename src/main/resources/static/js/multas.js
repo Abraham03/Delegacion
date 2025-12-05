@@ -349,7 +349,16 @@ function initTable() {
       processing:true,
       ajax: {
         url: "/Dextho/multas/todos",
+        type: "GET",
         error: function (xhr, status, error) {
+          var mensajeError = "Ocurrió un error al cargar los datos.";
+
+          if (xhr.responseJSON && xhr.responseJSON.message) {
+            mensajeError = xhr.responseJSON.message;
+          } else if (xhr.responseText) {
+            mensajeError = "Error del servidor: " + xhr.status;
+          }
+
           $(".alert-danger p").text(xhr.responseJSON.message);
           $("#modalServidor").modal("show");
           table.clear();
@@ -367,13 +376,13 @@ function initTable() {
         },
       },
       columns: [
-        { data: "id" },
-        { data: "ciudadano_id" },
-        { data: "nombreUsuario" },
-        { data: "grupo" },
-        { data: "descripcion" },
-        { data: "fecha_emitida" },
-        { data: "fecha_limite" },
+        { data: "id", defaultContent: "" },
+        { data: "ciudadano_id", defaultContent: "" },
+        { data: "nombreUsuario", defaultContent: "" },
+        { data: "grupo", defaultContent: "" },
+        { data: "descripcion", defaultContent: "" },
+        { data: "fecha_emitida", defaultContent: "" },
+        { data: "fecha_limite", defaultContent: "" },
         { data: "fecha_pagada",
         "render": function(data, type, row) {
           // Si la fecha_pagada es null, mostrar "Pendiente"; de lo contrario, mostrar la fecha

@@ -31,16 +31,9 @@ public class EstatusCiudadanoController {
     public ResponseEntity<?> getAllEstatusCiudadanos() {
         Map<String, Object> map = new LinkedHashMap<>();
         List<EstatusCiudadanos> listaEstatus = estatusCiudadanoServiceImp.getAllEstatusCiudadanos();
-        if (!listaEstatus.isEmpty()) {
-            map.put("Status", 1);
-            map.put("data", listaEstatus);
-            return new ResponseEntity<>(map, HttpStatus.OK);
-        } else {
-            map.clear();
-            map.put("status", 0);
-            map.put("message", "Datos no encontrados");
-            return new ResponseEntity<>(map, HttpStatus.NOT_FOUND);
-        }
+        map.put("Status", 1);
+        map.put("data", listaEstatus);
+        return new ResponseEntity<>(map, HttpStatus.OK);
 
     }
 

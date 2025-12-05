@@ -193,7 +193,19 @@ function initTable() {
       processing:true,
       ajax: {
         url: "/Dextho/estatus/todos",
+        type: "GET",
         error: function (xhr, status, error) {
+
+          var mensajeError = "Ocurrió un error al cargar los datos.";
+    
+          if (xhr.responseJSON && xhr.responseJSON.message) {
+            mensajeError = xhr.responseJSON.message;
+          } else if (xhr.responseText) {
+            mensajeError = "Error del servidor: " + xhr.status;
+          }
+    
+          console.log("Error detallado:", xhr); // Para que lo veas en consola
+          
           $(".alert-danger p").text(xhr.responseJSON.message);
           $("#modalServidor").modal("show");
           table.clear();
@@ -211,10 +223,10 @@ function initTable() {
         },
       },
       columns: [
-        { data: "id" },
-        { data: "nombre" },
-        { data: "descripcion" },
-        { data: "fecha_emitida" },
+        { data: "id", defaultContent: "" },
+        { data: "nombre", defaultContent: "" },
+        { data: "descripcion", defaultContent: "" },
+        { data: "fecha_emitida", defaultContent: "" },
         {
           data: null,
           render: function (data, type, row) {

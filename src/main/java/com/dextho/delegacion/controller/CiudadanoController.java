@@ -33,16 +33,9 @@ public class CiudadanoController {
     public ResponseEntity<?> getAllCiudadanos() {
         Map<String, Object> map = new LinkedHashMap<>();
         List<Ciudadanos> listaCiudadanos = ciudadanoServiceImpl.getAllCiudadanos();
-        if (!listaCiudadanos.isEmpty()) {
-            map.put("Status", 1);
-            map.put("data", listaCiudadanos);
-            return new ResponseEntity<>(map, HttpStatus.OK);
-        } else {
-            map.clear();
-            map.put("status", 0);
-            map.put("message", "Datos no encontrados");
-            return new ResponseEntity<>(map, HttpStatus.NOT_FOUND);
-        }
+        map.put("Status", 1);
+        map.put("data", listaCiudadanos);
+        return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
     @GetMapping("/ByGrupo/{grupo}")

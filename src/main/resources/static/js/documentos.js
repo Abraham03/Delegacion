@@ -1,10 +1,12 @@
 var ruta;
+var modal;
 const inputs = [
   "documento",
   "descripcion",
   "fecha_emitida",
   "nombre_delegado",
 ];
+
 $(document).ready(function () {
   initTable();
 
@@ -12,11 +14,8 @@ $(document).ready(function () {
   $("#myForm").submit(function (event) {
     event.preventDefault(); // Evitar que la página se recargue
     const data = recolectarDatos();
-    let valido = true;
-    if (data === "" || data === undefined) {
-      valido = false;
-    }
-    if (valido) {
+
+    if (data) {
       enviarDatos(data);
     }
   });
@@ -37,6 +36,27 @@ $("#salirGuardar").click(function () {
 });
 
 function obtenerPDF(data) {
+  var nombreArchivo = data.nombre_documento ? data.nombre_documento.toLowerCase() : "";
+  
+  // 1. Detectar tipo de archivo
+  var tipoAccion = "descargar"; // Por defecto descargar (Word/Excel)
+  var mimeType = "application/octet-stream";
+
+  if (nombreArchivo.endsWith(".pdf")) {
+      tipoAccion = "visualizar";
+      mimeType = "application/pdf";
+  } else if (nombreArchivo.endsWith(".jpg") || nombreArchivo.endsWith(".jpeg")) {
+      tipoAccion = "visualizar";
+      mimeType = "image/jpeg";
+  } else if (nombreArchivo.endsWith(".png")) {
+      tipoAccion = "visualizar";
+      mimeType = "image/png";
+  }
+
+  // Limpiamos el contenedor antes de pedir el archivo
+  var pdfContainer = document.getElementById("pdf-container");
+  pdfContainer.innerHTML = '<div class="text-center mt-3"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Cargando...</span></div><p>Procesando archivo...</p></div>';
+
   $.ajax({
     url: "/Dextho/documentos/pdf",
     type: "GET",
@@ -45,25 +65,47 @@ function obtenerPDF(data) {
       responseType: "blob",
     },
     success: function (response) {
-      var file = new Blob([response], { type: "application/pdf" });
+      // Creamos el objeto Blob
+      var file = new Blob([response], { type: mimeType });
       var fileURL = URL.createObjectURL(file);
+      pdfContainer.innerHTML = ""; // Limpiar spinner
 
-      // Vaciar el contenido actual del contenedor
-      var pdfContainer = document.getElementById("pdf-container");
-      pdfContainer.innerHTML = "";
-
-      // Crear un elemento <embed> para mostrar el PDF
-      var embedElement = document.createElement("embed");
-      embedElement.setAttribute("src", fileURL);
-      embedElement.setAttribute("type", "application/pdf");
-      embedElement.setAttribute("width", "70%");
-      embedElement.setAttribute("height", "600px");
-
-      // Agregar el elemento <embed> al contenedor
-      pdfContainer.appendChild(embedElement);
+      if (tipoAccion === "visualizar") {
+          // --- VISUALIZAR (PDF / IMAGEN) ---
+          if (mimeType === "application/pdf") {
+              var embedElement = document.createElement("embed");
+              embedElement.setAttribute("src", fileURL);
+              embedElement.setAttribute("type", "application/pdf");
+              embedElement.setAttribute("width", "100%"); // Mejor usar 100%
+              embedElement.setAttribute("height", "600px");
+              pdfContainer.appendChild(embedElement);
+          } else {
+              // Imagen
+              var imgElement = document.createElement("img");
+              imgElement.setAttribute("src", fileURL);
+              imgElement.setAttribute("class", "img-fluid border rounded shadow"); // Clases Bootstrap
+              imgElement.setAttribute("style", "max-height: 600px;");
+              pdfContainer.appendChild(imgElement);
+          }
+      } else {
+          // --- DESCARGAR (WORD / EXCEL) ---
+          // Creamos un link invisible y le damos clic automáticamente
+          var link = document.createElement("a");
+          link.href = fileURL;
+          link.download = data.nombre_documento; // Nombre real del archivo
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          
+          // Mostramos mensaje en el contenedor
+          pdfContainer.innerHTML = '<div class="alert alert-success mt-3 text-center">El archivo <b>' + data.nombre_documento + '</b> se ha descargado.</div>';
+      }
     },
     error: function (xhr, status, error) {
-      console.error(error);
+      pdfContainer.innerHTML = "";
+      console.error("Error:", error);
+      $(".alert-danger p").text("Error al cargar el documento.");
+      $("#modalServidor").modal("show");
     },
   });
 }
@@ -104,7 +146,19 @@ function initTable() {
     processing: true,
     ajax: {
       url: "/Dextho/documentos/todos",
+      type: "GET",
       error: function (xhr, status, error) {
+
+        var mensajeError = "Ocurrió un error al cargar los datos.";
+
+        if (xhr.responseJSON && xhr.responseJSON.message) {
+          mensajeError = xhr.responseJSON.message;
+        } else if (xhr.responseText) {
+          mensajeError = "Error del servidor: " + xhr.status;
+        }
+
+        console.log("Error detallado:", xhr); // Para que lo veas en consola        
+
         $(".alert-danger p").text(xhr.responseJSON.message);
         $("#modalServidor").modal("show");
         table.clear();
@@ -122,19 +176,20 @@ function initTable() {
       },
     },
     columns: [
-      { data: "id" },
-      { data: "ciudadano_id" },
-      { data: "nombreUsuario" },
-      { data: "grupo" },
-      { data: "tipo_documento" },
-      { data: "nombre_documento" },
-      { data: "descripcion" },
-      { data: "ruta" },
-      { data: "fecha_emitida" },
-      { data: "nombre_delegado" },
+      { data: "id", defaultContent: "" },
+      { data: "ciudadano_id", defaultContent: "" },
+      { data: "nombreUsuario", defaultContent: "" },
+      { data: "grupo", defaultContent: "" },
+      { data: "tipo_documento", defaultContent: "" },
+      { data: "nombre_documento", defaultContent: "" },
+      { data: "descripcion", defaultContent: "" },
+      { data: "ruta", defaultContent: "" },
+      { data: "fecha_emitida", defaultContent: "" },
+      { data: "nombre_delegado", defaultContent: "" },
       {
         data: null,
         render: function (data, type, row) {
+          var id = (data && data.id) ? data.id : 0;
           return (
             '<div class="row"><div class="col">' +
             '<button type="button" id="addDocumento" data-id="' +
@@ -226,29 +281,34 @@ function recolectarDatos() {
 
   // Obtener los valores de los campos select
   const camposSelect = ["ciudadanos", "tipo_documento", "grupo"];
-  for (let i = 0; i < camposSelect.length; i++) {
+for (let i = 0; i < camposSelect.length; i++) {
     const campo = camposSelect[i];
     const select = document.getElementById(campo);
+    
+    if (!select || select.selectedIndex === -1) {
+        $(".alert-danger p").text("Por favor selecciona una opción válida en: " + campo);
+        $("#modalServidor").modal("show");
+        return; // Retornamos undefined
+    }
+
     const valor = select.options[select.selectedIndex].value;
 
-    if (
-      valor === "Seleccione" ||
-      valor === "Datos no encontrados"
-    ) {
-      $(".alert-danger p").text(
-        "Selecciona una opción válida para todos los campos"
-      );
+    if (valor === "Seleccione" || valor === "Datos no encontrados") {
+      $(".alert-danger p").text("Selecciona una opción válida para " + campo);
       $("#modalServidor").modal("show");
       return;
     }
     dato[campo] = valor;
   }
 
-  // Obtener el elemento de entrada de archivo
+  // Guardamos el nombre (ID) del usuario explícitamente si se requiere
+  dato["nombreUsuario"] = dato["ciudadanos"];
+
+// 2. Obtener inputs normales
   const campos = ["descripcion", "fecha_emitida", "nombre_delegado"];
   campos.forEach(function (campo) {
-    const valor = document.getElementById(campo).value;
-    dato[campo] = valor;
+    const element = document.getElementById(campo);
+    dato[campo] = element ? element.value : "";
   });
 
   // Validar que todos los campos estén completos
@@ -259,13 +319,22 @@ function recolectarDatos() {
   }
 
   // Validar la selección de archivo
-  const inputFile = document.getElementById("documento");
-  if (inputFile.files.length === 0) {
+const inputFile = document.getElementById("documento");
+  if (!inputFile || inputFile.files.length === 0) {
     $(".alert-danger p").text("No se ha seleccionado ningún archivo");
     $("#modalServidor").modal("show");
     return;
   }
+// --- VALIDACIÓN DE TIPOS PERMITIDOS ---
   const archivo = inputFile.files[0];
+  const extension = archivo.name.split('.').pop().toLowerCase();
+  const extensionesValidas = ["pdf", "jpg", "jpeg", "png", "doc", "docx", "xls", "xlsx"];
+
+  if (!extensionesValidas.includes(extension)) {
+    $(".alert-danger p").text("Formato no válido. Solo se permiten: PDF, Imágenes, Word y Excel.");
+    $("#modalServidor").modal("show");
+    return;
+  }
 
   var ordenParametros = [
     "tipo_documento",

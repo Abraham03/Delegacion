@@ -351,7 +351,16 @@ function initTable() {
     processing: true,
     ajax: {
       url: "/Dextho/ciudadano/todos",
+      type: "GET",
       error: function (xhr, status, error) {
+        var mensajeError = "Ocurrió un error al cargar los datos.";
+
+        if (xhr.responseJSON && xhr.responseJSON.message) {
+          mensajeError = xhr.responseJSON.message;
+        } else if (xhr.responseText) {
+          mensajeError = "Error del servidor: " + xhr.status;
+        }
+
         $(".alert-danger p").text(xhr.responseJSON.message);
         $("#modalServidor").modal("show");
         table.clear();
@@ -376,11 +385,11 @@ function initTable() {
           return data.nombre + " " + data.apellido_p + " " + data.apellido_m;
         },
       },
-      { data: "fecha_Nacimiento" },
-      { data: "fecha_Ingreso" },
-      { data: "grupo" },
-      { data: "vive_pueblo" },
-      { data: "representante" },
+      { data: "fecha_Nacimiento", defaultContent: "" },
+      { data: "fecha_Ingreso", defaultContent: "" },
+      { data: "grupo", defaultContent: "" },
+      { data: "vive_pueblo", defaultContent: "" },
+      { data: "representante", defaultContent: "" },
       {
         data: "estatusCiudadanos.nombre",
         title: "Estatus",

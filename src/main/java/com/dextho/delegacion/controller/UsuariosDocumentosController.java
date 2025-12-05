@@ -3,12 +3,14 @@ package com.dextho.delegacion.controller;
 import com.dextho.delegacion.model.UsuariosDocumentos;
 import com.dextho.delegacion.servicesImpl.DocumentosService;
 import com.dextho.delegacion.servicesImpl.UsuariosDocumentosServiceImp;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -35,17 +37,10 @@ public class UsuariosDocumentosController {
     public ResponseEntity<?> getAllUsuariosDocumentos() {
         Map<String, Object> map = new LinkedHashMap<>();
         Iterable<UsuariosDocumentos> listaDocumentos = usuariosDocumentosServiceImp.getAllUsuariosDocumentos();
-        listaDocumentos.iterator();
-        if (listaDocumentos.iterator().hasNext()) {
-            map.put("Status", 1);
-            map.put("data", listaDocumentos);
-            return new ResponseEntity<>(map, HttpStatus.OK);
-        } else {
-            map.clear();
-            map.put("Status", 0);
-            map.put("message", "Datos no encontrados");
-            return new ResponseEntity<>(map, HttpStatus.NOT_FOUND);
-        }
+        map.put("Status", 1);
+        map.put("data", listaDocumentos);
+        return new ResponseEntity<>(map, HttpStatus.OK);
+
     }
 
     @PostMapping("/guardar")
@@ -70,20 +65,34 @@ public class UsuariosDocumentosController {
     @GetMapping("/pdf")
     public ResponseEntity<Resource> archivoPDF(@RequestParam("documentoId") Long documentoId) {
         Optional<UsuariosDocumentos> usuariosDocumentos = usuariosDocumentosServiceImp.findById(documentoId);
-        Map<String, Object> map = new LinkedHashMap<>();
         if (usuariosDocumentos.isPresent()) {
-            UsuariosDocumentos usuariosDocumentosDatos = usuariosDocumentos.get();
-            String ruta = usuariosDocumentosDatos.getRuta();
-            Resource resource = documentosService.obtenerArchivoPDF(ruta);
+            UsuariosDocumentos doc = usuariosDocumentos.get();
+            Resource resource = documentosService.obtenerArchivoPDF(doc.getRuta());
+
+            // 1. Detectar Content-Type dinámicamente
+            String nombreArchivo = doc.getNombre_documento().toLowerCase();
+            MediaType contentType = MediaType.APPLICATION_OCTET_STREAM; // Genérico por defecto
+
+            if (nombreArchivo.endsWith(".pdf")) {
+                contentType = MediaType.APPLICATION_PDF;
+            } else if (nombreArchivo.endsWith(".jpg") || nombreArchivo.endsWith(".jpeg")) {
+                contentType = MediaType.IMAGE_JPEG;
+            } else if (nombreArchivo.endsWith(".png")) {
+                contentType = MediaType.IMAGE_PNG;
+            } else if (nombreArchivo.endsWith(".doc") || nombreArchivo.endsWith(".docx")) {
+                // Tipo MIME para Word
+                contentType = MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+            } else if (nombreArchivo.endsWith(".xls") || nombreArchivo.endsWith(".xlsx")) {
+                // Tipo MIME para Excel
+                contentType = MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            }
 
             return ResponseEntity.ok()
-                    .contentType(MediaType.APPLICATION_PDF)
+                    .contentType(contentType)
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + doc.getNombre_documento() + "\"")
                     .body(resource);
         } else {
-            map.put("status", 0);
-            map.put("error", "Error");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-
         }
 
     }
