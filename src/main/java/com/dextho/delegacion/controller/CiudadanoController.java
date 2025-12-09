@@ -38,6 +38,15 @@ public class CiudadanoController {
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
+    @GetMapping("/activos")
+    public ResponseEntity<?> getCiudadanosActivos() {
+        Map<String, Object> map = new LinkedHashMap<>();
+        List<Ciudadanos> listaCiudadanos = ciudadanoServiceImpl.getAllActivos();
+        map.put("Status", 1);
+        map.put("data", listaCiudadanos);
+        return new ResponseEntity<>(map, HttpStatus.OK);
+    }
+
     @GetMapping("/ByGrupo/{grupo}")
     public ResponseEntity<?> getAllCiudadanosByGrupo(@PathVariable("grupo") int grupo) {
         Map<String, Object> map = new LinkedHashMap<>();
