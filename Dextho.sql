@@ -19,7 +19,7 @@
 -- Table structure for table `asistencias`
 --
 
-USE Dextho;
+USE dextho_db;
 
 DROP TABLE IF EXISTS `asistencias`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;

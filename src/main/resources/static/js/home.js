@@ -11,8 +11,13 @@ function grafica() {
   fetch("/Dextho/ciudadano/todos")
     .then((response) => response.json())
     .then((data) => {
+      console.log(data);
       let totalDeudas = 0;
       let totalMonto = 0;
+
+      let countActivos = 0;
+      let countInactivos = 0;
+      let countJubilados = 0;
 
       data.data.forEach((ciudadano) => {
         ciudadano.multas.forEach((multa) => {
@@ -21,21 +26,38 @@ function grafica() {
             totalMonto += multa.monto;
           }
         });
+
+        if (ciudadano.estatusCiudadanos){
+          const estatusNombre = ciudadano.estatusCiudadanos.nombre;
+
+          if(estatusNombre === "Activo") countActivos++;
+          else if(estatusNombre === "Inactivo") countInactivos++;
+          else if(estatusNombre === "Jubilado") countJubilados++;
+        
+        }
       });
 
+
+
       // Actualizar el elemento HTML con el total de ciudadanos que deben una multa y el monto total
-      const totalDeudasElement = document.getElementById("totalDeudas");
-      const totalMontoElement = document.getElementById("totalMonto");
-
-      totalDeudasElement.textContent = `Total de Deudores: ${totalDeudas}`;
-      totalMontoElement.textContent = `Monto Total: ${totalMonto.toLocaleString("es-MX", { style: "currency", currency: "MXN" })}`;
+      const totalDeudasElement = document.getElementById("totalDeudas").textContent = `Total de Deudores: ${totalDeudas}`;
+      const totalMontoElement = document.getElementById("totalMonto").textContent = `Monto Total: ${totalMonto.toLocaleString("es-MX", { style: "currency", currency: "MXN" })}`;
 
 
-      totalCiudadanos = data.data.length;
+      // ACTUALIZAR NUEVOS CONTADORES EN DOM
+      // Asegúrate de haber agregado los IDs correspondientes en el HTML
+      if(document.getElementById("totalActivos")) 
+          document.getElementById("totalActivos").textContent = `Total: ${countActivos}`;
+      if(document.getElementById("totalJubilados")) 
+          document.getElementById("totalJubilados").textContent = `Total: ${countJubilados}`;
+      if(document.getElementById("totalInactivos")) 
+          document.getElementById("totalInactivos").textContent = `Total: ${countInactivos}`;
+
+      //totalCiudadanos = data.data.length;
 
       // Actualizar el contenido del elemento <p> con el id "totalCiudadanos"
-      const totalCiudadanosElement = document.getElementById("totalCiudadanos");
-      totalCiudadanosElement.textContent = `Total: ${totalCiudadanos}`;
+      //const totalCiudadanosElement = document.getElementById("totalCiudadanos");
+      //totalCiudadanosElement.textContent = `Total: ${totalCiudadanos}`;
 
       // Luego de crear el gráfico, actualizamos la lista
       const grupoList = document.getElementById("grupoList");
@@ -48,6 +70,10 @@ function grafica() {
           acc[group] = {
             vive_pueblo: 0,
             no_vive_pueblo: 0,
+            activos: 0,
+            inactivos: 0,
+            jubilados: 0,
+            otros: 0
           };
         }
 
@@ -55,6 +81,15 @@ function grafica() {
           acc[group].vive_pueblo++;
         } else {
           acc[group].no_vive_pueblo++;
+        }
+
+        // Conteo detallado por Estatus
+        if (current.estatusCiudadanos) {
+             const nombreEstatus = current.estatusCiudadanos.nombre;
+             if (nombreEstatus === "Activo") acc[group].activos++;
+             else if (nombreEstatus === "Inactivo") acc[group].inactivos++;
+             else if (nombreEstatus === "Jubilado") acc[group].jubilados++;
+             else acc[group].otros++;
         }
 
         return acc;
@@ -67,13 +102,71 @@ function grafica() {
         (group) => counts[group].no_vive_pueblo
       );
 
-      labels.forEach((grupo, index) => {
-        const listItem = document.createElement("a");
-        listItem.classList.add("list-group-item");
-        listItem.textContent = `Grupo ${grupo}: - ${
-          vivePuebloCounts[index] + noVivePuebloCounts[index]
-        }`;
+// Limpiamos la lista antes de agregar (buena práctica)
+      grupoList.innerHTML = ""; 
+
+      labels.forEach((grupo) => {
+        const datosGrupo = counts[grupo];
+        const cantidadActivos = datosGrupo.activos;
+        
+        // Creamos el contenido HTML que irá DENTRO de la burbuja (Popover)
+        // Usamos clases utilitarias para colores: Success(Verde), Secondary(Gris), Warning(Amarillo)
+        const popoverContent = `
+            <div class="small">
+                <div class="d-flex justify-content-between mb-1">
+                    <span class="text-success fw-bold">Activos:</span>
+                    <span>${datosGrupo.activos}</span>
+                </div>
+                <div class="d-flex justify-content-between mb-1">
+                    <span class="text-secondary fw-bold">Inactivos:</span>
+                    <span>${datosGrupo.inactivos}</span>
+                </div>
+                <div class="d-flex justify-content-between mb-1">
+                    <span class="text-warning fw-bold">Jubilados:</span>
+                    <span>${datosGrupo.jubilados}</span>
+                </div>
+                ${datosGrupo.otros > 0 ? `
+                <div class="d-flex justify-content-between border-top pt-1 mt-1">
+                    <span class="text-muted">Otros:</span>
+                    <span>${datosGrupo.otros}</span>
+                </div>` : ''}
+            </div>
+        `;
+
+        const listItem = document.createElement("li");
+        
+        // Configuración visual de la lista
+        listItem.classList.add("list-group-item", "list-group-item-action", "d-flex", "justify-content-between", "align-items-center", "py-3");
+        
+        // --- AQUÍ LA MAGIA DEL POPOVER ---
+        listItem.setAttribute("data-bs-toggle", "popover");
+        listItem.setAttribute("data-bs-trigger", "hover focus"); // Se activa con hover
+        listItem.setAttribute("data-bs-html", "true"); // Permite HTML dentro
+        listItem.setAttribute("title", `Desglose Grupo ${grupo}`); // Título de la burbuja
+        listItem.setAttribute("data-bs-content", popoverContent); // El contenido detallado
+        // ---------------------------------
+
+        const badgeColor = cantidadActivos > 0 ? "bg-success" : "bg-secondary";
+
+        listItem.innerHTML = `
+            <div class="d-flex align-items-center">
+                <div>
+                    <h6 class="mb-0 text-dark fw-bold">Grupo ${grupo}</h6>
+                    <small class="text-muted" style="font-size: 0.75rem;">Pasa el mouse para detalles</small>
+                </div>
+            </div>
+            <span class="badge ${badgeColor} rounded-pill px-3 py-2">
+                ${cantidadActivos} Activos
+            </span>
+        `;
+        
         grupoList.appendChild(listItem);
+      });
+
+      // IMPORTANTE: Inicializar los Popovers después de agregarlos al DOM
+      const popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+      const popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+        return new bootstrap.Popover(popoverTriggerEl);
       });
 
       // Crear el gráfico de barras

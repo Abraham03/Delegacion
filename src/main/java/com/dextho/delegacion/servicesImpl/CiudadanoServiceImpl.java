@@ -30,6 +30,13 @@ public class CiudadanoServiceImpl {
         return ciudadanos;
     }
 
+    public List<Ciudadanos> getAllByEstatus(String nombreEstatus) {
+        if (nombreEstatus == null || nombreEstatus.equalsIgnoreCase("Todos")) {
+            return ciudadanosRepository.findAll();
+        }
+        return ciudadanosRepository.findByEstatusNombre(nombreEstatus);
+    }
+
     public List<Ciudadanos> getAllByGrupo(int grupo) {
         List<Ciudadanos> ciudadanos = (List<Ciudadanos>) ciudadanosRepository.findByGrupo(grupo);
         return ciudadanos;

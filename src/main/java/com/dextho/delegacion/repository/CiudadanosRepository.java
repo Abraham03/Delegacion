@@ -20,6 +20,11 @@ public interface CiudadanosRepository extends CrudRepository<Ciudadanos, Long> {
             + " WHERE e.nombre = 'Activo'")
     List<Ciudadanos> findAllActivos();
 
+    @Query("SELECT c FROM Ciudadanos c "
+            + " INNER JOIN c.estatusCiudadanos e "
+            + " WHERE e.nombre = :nombreEstatus")
+    List<Ciudadanos> findByEstatusNombre(@Param("nombreEstatus") String nombreEstatus);
+
     @Query("SELECT NEW com.dextho.delegacion.dto.CiudadanosDocumentosDTO(c.id,CONCAT(c.nombre, ' ',c.apellido_p, ' ',c.apellido_m), c.grupo) "
             + "FROM Ciudadanos c "
             + "WHERE c.grupo = :grupo")

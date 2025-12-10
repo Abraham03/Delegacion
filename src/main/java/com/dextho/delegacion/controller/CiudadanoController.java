@@ -38,6 +38,24 @@ public class CiudadanoController {
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
+    @GetMapping("/filtro/{estatus}")
+    public ResponseEntity<?> getCiudadanosByEstatus(@PathVariable("estatus") String estatus) {
+        Map<String, Object> map = new LinkedHashMap<>();
+        List<Ciudadanos> listaCiudadanos = ciudadanoServiceImpl.getAllByEstatus(estatus);
+
+        if (!listaCiudadanos.isEmpty()) {
+            map.put("Status", 1);
+            map.put("data", listaCiudadanos);
+            return new ResponseEntity<>(map, HttpStatus.OK);
+        } else {
+            map.clear();
+            map.put("status", 0);
+            map.put("data", "Datos no encontrados");
+            // Nota: Devolver OK con lista vacía o mensaje es mejor para manejarlo en el front
+            return new ResponseEntity<>(map, HttpStatus.OK);
+        }
+    }
+
     @GetMapping("/activos")
     public ResponseEntity<?> getCiudadanosActivos() {
         Map<String, Object> map = new LinkedHashMap<>();
